@@ -6,72 +6,68 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
 // Cấu hình JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"]))
-        };
-    });
+	.AddJwtBearer(options =>
+	{
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidateAudience = true,
+			ValidateLifetime = true,
+			ValidateIssuerSigningKey = true, // ✅ Đã sửa lỗi ở đây
+			IssuerSigningKey = new SymmetricSecurityKey(
+				Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])
+			)
+		};
+	});
 
 // Cấu hình phân quyền
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+	options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+	options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
 });
-// Thêm các dịch vụ vào container trước khi gọi builder.Build()
+
+// Thêm các dịch vụ vào container
 builder.Services.AddControllers()
 	.AddJsonOptions(options =>
 	{
 		options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
-		options.JsonSerializerOptions.WriteIndented = true; // Tuỳ chọn: format JSON đẹp hơn
+		options.JsonSerializerOptions.WriteIndented = true;
 	});
 
-// Cấu hình Swagger/OpenAPI cho môi trường phát triển
-builder.Services.AddEndpointsApiExplorer();  // Cấu hình OpenAPI
-builder.Services.AddSwaggerGen();  // Thêm Swagger để tạo tài liệu API
+// Swagger / OpenAPI
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-// Cấu hình DbContext để sử dụng SQL Server
+// Cấu hình DbContext (EF Core)
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// Cấu hình CORS để cho phép tất cả các origin
+// Cho phép tất cả origin (nên giới hạn sau này nếu cần bảo mật)
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll", builder =>
-    {
-        builder.AllowAnyOrigin()
-               .AllowAnyMethod()
-               .AllowAnyHeader();
-    });
+	options.AddPolicy("AllowAll", policy =>
+	{
+		policy.AllowAnyOrigin()
+			  .AllowAnyMethod()
+			  .AllowAnyHeader();
+	});
 });
 
-var app = builder.Build();  // Gọi Build sau khi cấu hình dịch vụ
+var app = builder.Build();
 
-// Cấu hình pipeline cho yêu cầu HTTP
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger(); // Sử dụng Swagger
-    app.UseSwaggerUI(); // Hiển thị UI Swagger
-}
+// ✅ Luôn bật Swagger, kể cả môi trường Production (Render dùng môi trường này)
+app.UseSwagger();
+app.UseSwaggerUI();
 
-// Áp dụng CORS
+// Middleware pipeline
 app.UseCors("AllowAll");
-
-app.UseHttpsRedirection();  // Redirect HTTP requests to HTTPS
-
+app.UseHttpsRedirection();
 app.UseAuthentication();
-
-app.UseAuthorization();  // Enable authorization middleware
-
-app.MapControllers();  // Định tuyến controller
-
-app.Run();  // Chạy ứng dụng
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
