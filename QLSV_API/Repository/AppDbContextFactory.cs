@@ -5,20 +5,22 @@ using System.IO;
 
 namespace QLSV_API.Repository
 {
-    public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
-    {
-        public AppDbContext CreateDbContext(string[] args)
-        {
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory()) // thư mục gốc project
-                .AddJsonFile("appsettings.json") // file chứa chuỗi kết nối
-                .Build();
+	public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+	{
+		public AppDbContext CreateDbContext(string[] args)
+		{
+			var configuration = new ConfigurationBuilder()
+				.SetBasePath(Directory.GetCurrentDirectory())
+				.AddJsonFile("appsettings.json")
+				.Build();
 
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            optionsBuilder.UseSqlServer(connectionString);
+			var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+			var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-            return new AppDbContext(optionsBuilder.Options);
-        }
-    }
+			// Đổi từ UseSqlServer sang UseNpgsql cho PostgreSQL
+			optionsBuilder.UseNpgsql(connectionString);
+
+			return new AppDbContext(optionsBuilder.Options);
+		}
+	}
 }
