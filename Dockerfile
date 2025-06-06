@@ -1,17 +1,23 @@
-﻿# Dockerfile đề xuất
+﻿# Giai đoạn base (runtime)
 FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 
+# Giai đoạn build
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
-# Sao chép toàn bộ mã nguồn
+# Sao chép toàn bộ mã nguồn vào container
 COPY . .
 
-# Build đúng file .csproj ở thư mục gốc
-RUN dotnet publish "./QLSV_API.csproj" -c Release -o /app/out
+# Di chuyển vào thư mục chứa file .csproj (nếu có thư mục con thì điều chỉnh)
+WORKDIR /src
 
+# Chạy publish bằng đường dẫn đầy đủ
+RUN dotnet publish "QLSV_API.csproj" -c Release -o /app/out
+
+# Giai đoạn final
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/out .
+
 ENTRYPOINT ["dotnet", "QLSV_API.dll"]
