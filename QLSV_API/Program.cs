@@ -7,6 +7,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Đọc JWT configuration
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var secretKey = jwtSettings["SecretKey"];
+var issuer = jwtSettings["Issuer"];
+var audience = jwtSettings["Audience"];
+
+if (string.IsNullOrEmpty(secretKey))
+{
+	throw new InvalidOperationException("JWT SecretKey is not configured.");
+}
+
 // Cấu hình JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 	.AddJwtBearer(options =>
@@ -16,10 +27,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 			ValidateIssuer = true,
 			ValidateAudience = true,
 			ValidateLifetime = true,
-			ValidateIssuerSigningKey = true, // ✅ Đã sửa lỗi ở đây
+			ValidateIssuerSigningKey = true,
+			ValidIssuer = issuer,
+			ValidAudience = audience,
 			IssuerSigningKey = new SymmetricSecurityKey(
-				Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])
-			)
+				Encoding.UTF8.GetBytes(secretKey)
+			),
+			ClockSkew = TimeSpan.Zero
 		};
 	});
 
@@ -42,25 +56,52 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// ✅ THAY ĐỔI: Cấu hình DbContext cho PostgreSQL (Supabase)
-// Ưu tiên Environment Variable từ Render, fallback về appsettings.json
+// Cấu hình DbContext cho PostgreSQL (Supabase)
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
 	?? builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-	options.UseNpgsql(connectionString, npgsqlOptions =>
-	{
-		npgsqlOptions.EnableRetryOnFailure(3); // Retry 3 lần nếu connection fail
-		npgsqlOptions.CommandTimeout(30); // Timeout 30 giây
-	})
-);
+if (string.IsNullOrEmpty(connectionString))
+{
+	throw new InvalidOperationException("Database connection string is not configured.");
+}
 
-// ❌ KHÔNG DÙNG SQL Server nữa (nhưng giữ lại để tham khảo)
-// builder.Services.AddDbContext<AppDbContext>(options =>
-// 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-// );
+// Chuyển đổi từ PostgreSQL URI sang Npgsql connection string nếu cần
+if (connectionString.StartsWith("postgresql://") || connectionString.StartsWith("postgres://"))
+{
+	var uri = new Uri(connectionString);
+	var password = uri.UserInfo.Contains(':') ? uri.UserInfo.Split(':')[1] : "";
+	var username = uri.UserInfo.Contains(':') ? uri.UserInfo.Split(':')[0] : uri.UserInfo;
 
-// Cho phép tất cả origin (nên giới hạn sau này nếu cần bảo mật)
+	connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=true;Pooling=true;Connection Idle Lifetime=300;";
+}
+
+// Log connection string (ẩn password)
+var logConnectionString = connectionString.Contains("Password=")
+	? connectionString.Substring(0, connectionString.IndexOf("Password=")) + "Password=***;" + connectionString.Substring(connectionString.IndexOf(";", connectionString.IndexOf("Password=")))
+	: connectionString;
+Console.WriteLine($"Using connection string: {logConnectionString}");
+
+try
+{
+	builder.Services.AddDbContext<AppDbContext>(options =>
+		options.UseNpgsql(connectionString, npgsqlOptions =>
+		{
+			npgsqlOptions.EnableRetryOnFailure(
+				maxRetryCount: 3,
+				maxRetryDelay: TimeSpan.FromSeconds(5),
+				errorCodesToAdd: null
+			);
+			npgsqlOptions.CommandTimeout(60); // Tăng timeout lên 60 giây
+		})
+	);
+}
+catch (Exception ex)
+{
+	Console.WriteLine($"Error configuring DbContext: {ex.Message}");
+	throw;
+}
+
+// CORS
 builder.Services.AddCors(options =>
 {
 	options.AddPolicy("AllowAll", policy =>
@@ -73,9 +114,37 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// ✅ Luôn bật Swagger, kể cả môi trường Production (Render dùng môi trường này)
+// Test database connection
+try
+{
+	using var scope = app.Services.CreateScope();
+	var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+	Console.WriteLine("Testing database connection...");
+	await context.Database.CanConnectAsync();
+	Console.WriteLine("Database connection successful!");
+
+	// Apply migrations
+	Console.WriteLine("Applying database migrations...");
+	await context.Database.MigrateAsync();
+	Console.WriteLine("Database migrations applied successfully!");
+}
+catch (Exception ex)
+{
+	Console.WriteLine($"Database connection/migration error: {ex.Message}");
+	Console.WriteLine($"Stack trace: {ex.StackTrace}");
+
+	// Không throw exception ở đây để app vẫn có thể chạy
+	// throw;
+}
+
+// Luôn bật Swagger
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+	c.SwaggerEndpoint("/swagger/v1/swagger.json", "QLSV API V1");
+	c.RoutePrefix = string.Empty; // Swagger UI ở root
+});
 
 // Middleware pipeline
 app.UseCors("AllowAll");
@@ -84,4 +153,19 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
+// Health check endpoint
+app.MapGet("/health", async (AppDbContext context) =>
+{
+	try
+	{
+		await context.Database.CanConnectAsync();
+		return Results.Ok(new { status = "Healthy", timestamp = DateTime.UtcNow });
+	}
+	catch (Exception ex)
+	{
+		return Results.Problem($"Database connection failed: {ex.Message}");
+	}
+});
+
+Console.WriteLine("Application starting...");
 app.Run();
