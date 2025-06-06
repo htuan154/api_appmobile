@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 
 namespace QLSV_API.Repository
@@ -14,7 +15,7 @@ namespace QLSV_API.Repository
 				// Cấu hình timezone cho Npgsql
 				AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
-				// Tạo configuration builder với error handling
+				// Tạo configuration builder
 				var configuration = new ConfigurationBuilder()
 					.SetBasePath(Directory.GetCurrentDirectory())
 					.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -24,22 +25,16 @@ namespace QLSV_API.Repository
 				var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
 				var connectionString = configuration.GetConnectionString("DefaultConnection");
 
-				// Fallback connection string nếu không đọc được
+				// Fallback nếu không tìm thấy chuỗi kết nối
 				if (string.IsNullOrEmpty(connectionString))
 				{
 					Console.WriteLine("⚠️ Using fallback connection string");
-					connectionString = "Host=aws-0-ap-southeast-1.pooler.supabase.com;Database=postgres;Username=postgres.lpfczxkyuvntotmxgbxy;Password=htuan15424@;Port=6543;SSL Mode=Require;Trust Server Certificate=true;Pooling=false;No Reset On Close=true;Enlist=false;Connection Idle Lifetime=300;Include Error Detail=true;Timeout=60;Command Timeout=180;Application Name=QLSV-API;";
-				}
-
-				// URL decode password nếu cần thiết
-				if (connectionString.Contains("htuan15424%40"))
-				{
-					connectionString = connectionString.Replace("htuan15424%40", "htuan15424@");
+					connectionString = "Host=aws-0-ap-southeast-1.pooler.supabase.com;Port=6543;Username=postgres.ptjwvhtebbrdsqkelcrl;Password=htuan15424;Database=postgres;SSL Mode=Require;Trust Server Certificate=true;Pooling=false;Application Name=QLSV-API;";
 				}
 
 				Console.WriteLine($"🔗 Design-time connection: {MaskPassword(connectionString)}");
 
-				// Cấu hình Npgsql với retry và timeout
+				// Cấu hình Npgsql
 				optionsBuilder.UseNpgsql(connectionString, npgsqlOptions =>
 				{
 					npgsqlOptions.EnableRetryOnFailure(
@@ -47,10 +42,10 @@ namespace QLSV_API.Repository
 						maxRetryDelay: TimeSpan.FromSeconds(30),
 						errorCodesToAdd: null
 					);
-					npgsqlOptions.CommandTimeout(180); // 3 minutes timeout
+					npgsqlOptions.CommandTimeout(180);
 				});
 
-				// Enable sensitive data logging cho development
+				// Ghi log chi tiết nếu đang dev
 				optionsBuilder.EnableSensitiveDataLogging();
 				optionsBuilder.EnableDetailedErrors();
 

@@ -256,7 +256,7 @@ static List<string> GetAlternativeConnectionStrings(IConfiguration configuration
 		// 1. PRIORITY: Supavisor Session Mode (IPv4 compatible) - Port 6543
 		var supavisorSession = baseConnectionString
 			.Replace(":5432", ":6543")
-			.Replace("db.lpfczxkyuvntotmxgbxy.supabase.co:5432", "db.lpfczxkyuvntotmxgbxy.supabase.co:6543");
+			.Replace("db.ptjwvhtebbrdsqkelcrl.supabase.co:5432", "db.ptjwvhtebbrdsqkelcrl.supabase.co:6543");
 		if (!supavisorSession.Contains("Pooling=false"))
 		{
 			supavisorSession += "Pooling=false;"; // Disable connection pooling for session mode
@@ -283,7 +283,7 @@ static List<string> GetAlternativeConnectionStrings(IConfiguration configuration
 		// 3. Transaction pooling mode (port 6543) 
 		var transactionPooling = baseConnectionString
 			.Replace(":5432", ":6543")
-			.Replace("db.lpfczxkyuvntotmxgbxy.supabase.co:5432", "db.lpfczxkyuvntotmxgbxy.supabase.co:6543");
+			.Replace("db.ptjwvhtebbrdsqkelcrl.supabase.co:5432", "db.ptjwvhtebbrdsqkelcrl.supabase.co:6543");
 		if (!transactionPooling.Contains("Enlist"))
 		{
 			transactionPooling += "Enlist=false;";
@@ -301,7 +301,7 @@ static List<string> GetAlternativeConnectionStrings(IConfiguration configuration
 		// 4. Legacy PgBouncer format nếu có thể
 		try
 		{
-			var pgbouncerUri = "postgresql://postgres.lpfczxkyuvntotmxgbxy:htuan15424%40@db.lpfczxkyuvntotmxgbxy.supabase.co:6543/postgres?sslmode=require&pgbouncer=true&pooling=false";
+			var pgbouncerUri = "postgresql://postgres.ptjwvhtebbrdsqkelcrl:htuan15424@db.ptjwvhtebbrdsqkelcrl.supabase.co:6543/postgres?sslmode=require&pgbouncer=true&pooling=false";
 			alternatives.Add(ConvertPostgresUriToConnectionString(pgbouncerUri));
 		}
 		catch
