@@ -1,0 +1,4 @@
+@QLSV_API_HostAddress = http://localhost:5085
+
+GET {{QLSV_API_HostAddress}}/api/NhanViens
+Accept: application/json
