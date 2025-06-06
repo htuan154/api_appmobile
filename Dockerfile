@@ -9,10 +9,10 @@ WORKDIR /src
 # Sao chép toàn bộ mã nguồn vào container
 COPY . .
 
-# Di chuyển vào thư mục chứa file .csproj (nếu có thư mục con thì điều chỉnh)
-WORKDIR /src
+# Di chuyển vào thư mục chứa .csproj (vì file nằm trong QLSV_API)
+WORKDIR /src/QLSV_API
 
-# Chạy publish bằng đường dẫn đầy đủ
+# Build và publish
 RUN dotnet publish "QLSV_API.csproj" -c Release -o /app/out
 
 # Giai đoạn final
