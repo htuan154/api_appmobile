@@ -36,7 +36,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
@@ -162,7 +162,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("SDT")
                         .IsRequired()
@@ -185,7 +185,7 @@ namespace QLSV_API.Migrations
                             Email = "htuan15424@gmail.com",
                             Gioitinh = "Nam",
                             NamVaoLam = 2015,
-                            NgaySinh = new DateTime(2004, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NgaySinh = new DateTime(2004, 4, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             SDT = "0987654321",
                             Ten_NV = "Lê Đăng Hoàng Tuấn"
                         });
@@ -232,7 +232,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Ten_SV")
                         .IsRequired()
@@ -320,7 +320,7 @@ namespace QLSV_API.Migrations
                         .HasColumnOrder(1);
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("TrangThai")
                         .IsRequired()
@@ -347,7 +347,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NgayThongBao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
@@ -380,7 +380,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NgayThongBao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
@@ -409,7 +409,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
@@ -431,7 +431,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NgayXuLy")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("TrangThai_cu")
                         .IsRequired()
@@ -462,7 +462,7 @@ namespace QLSV_API.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()

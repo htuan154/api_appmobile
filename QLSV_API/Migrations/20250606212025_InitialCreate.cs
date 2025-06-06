@@ -17,8 +17,8 @@ namespace QLSV_API.Migrations
                 name: "LoaiTaiKhoans",
                 columns: table => new
                 {
-                    Ma_Loai = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ten_Loai = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Ma_Loai = table.Column<string>(type: "text", nullable: false),
+                    Ten_Loai = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,8 +29,8 @@ namespace QLSV_API.Migrations
                 name: "LoaiYeuCaus",
                 columns: table => new
                 {
-                    Ma_loaiYC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ten_loaiYC = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Ma_loaiYC = table.Column<string>(type: "text", nullable: false),
+                    Ten_loaiYC = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -41,8 +41,8 @@ namespace QLSV_API.Migrations
                 name: "Lops",
                 columns: table => new
                 {
-                    MaLop = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenLop = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    MaLop = table.Column<string>(type: "text", nullable: false),
+                    TenLop = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,13 +53,15 @@ namespace QLSV_API.Migrations
                 name: "NhanViens",
                 columns: table => new
                 {
-                    Ma_NV = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ten_NV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    NamVaoLam = table.Column<int>(type: "int", nullable: false),
-                    ChucVu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Ma_NV = table.Column<string>(type: "text", nullable: false),
+                    Ten_NV = table.Column<string>(type: "text", nullable: false),
+                    DiaChi = table.Column<string>(type: "text", nullable: false),
+                    NgaySinh = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    NamVaoLam = table.Column<int>(type: "integer", nullable: false),
+                    ChucVu = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    Gioitinh = table.Column<string>(type: "text", nullable: false),
+                    SDT = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,18 +72,18 @@ namespace QLSV_API.Migrations
                 name: "SinhViens",
                 columns: table => new
                 {
-                    Ma_SV = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ten_SV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Gioi_Tinh = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NgaySinh = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    KhoaHoc = table.Column<int>(type: "int", nullable: false),
-                    BacDaoTao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LoaiHinhDaoTao = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nganh = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LopHoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaLop = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Ma_SV = table.Column<string>(type: "text", nullable: false),
+                    Ten_SV = table.Column<string>(type: "text", nullable: false),
+                    Gioi_Tinh = table.Column<string>(type: "text", nullable: false),
+                    DiaChi = table.Column<string>(type: "text", nullable: false),
+                    NgaySinh = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    KhoaHoc = table.Column<int>(type: "integer", nullable: false),
+                    BacDaoTao = table.Column<string>(type: "text", nullable: false),
+                    LoaiHinhDaoTao = table.Column<string>(type: "text", nullable: false),
+                    Nganh = table.Column<string>(type: "text", nullable: false),
+                    LopHoc = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    MaLop = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -98,11 +100,11 @@ namespace QLSV_API.Migrations
                 name: "TaiKhoans",
                 columns: table => new
                 {
-                    Ma_TK = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenDangNhap = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ma_NV = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_Loai = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Ma_TK = table.Column<string>(type: "text", nullable: false),
+                    TenDangNhap = table.Column<string>(type: "text", nullable: false),
+                    MatKhau = table.Column<string>(type: "text", nullable: false),
+                    Ma_NV = table.Column<string>(type: "text", nullable: false),
+                    Ma_Loai = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -125,10 +127,10 @@ namespace QLSV_API.Migrations
                 name: "TaiKhoanSinhViens",
                 columns: table => new
                 {
-                    Ma_TKSV = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TenDangNhap = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MatKhau = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ma_SV = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Ma_TKSV = table.Column<string>(type: "text", nullable: false),
+                    TenDangNhap = table.Column<string>(type: "text", nullable: false),
+                    MatKhau = table.Column<string>(type: "text", nullable: false),
+                    Ma_SV = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -145,10 +147,10 @@ namespace QLSV_API.Migrations
                 name: "TinTucs",
                 columns: table => new
                 {
-                    Ma_TT = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_TK = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Ma_TT = table.Column<string>(type: "text", nullable: false),
+                    Ma_TK = table.Column<string>(type: "text", nullable: false),
+                    NoiDung = table.Column<string>(type: "text", nullable: false),
+                    NgayTao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -165,12 +167,12 @@ namespace QLSV_API.Migrations
                 name: "YeuCaus",
                 columns: table => new
                 {
-                    Ma_YC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_loaiYC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_TKSV = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TrangThai = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Ma_YC = table.Column<string>(type: "text", nullable: false),
+                    Ma_loaiYC = table.Column<string>(type: "text", nullable: false),
+                    Ma_TKSV = table.Column<string>(type: "text", nullable: false),
+                    NoiDung = table.Column<string>(type: "text", nullable: false),
+                    NgayTao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TrangThai = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -193,9 +195,10 @@ namespace QLSV_API.Migrations
                 name: "ThongBaos",
                 columns: table => new
                 {
-                    Ma_TT = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_TKSV = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Ma_TT = table.Column<string>(type: "text", nullable: false),
+                    Ma_TKSV = table.Column<string>(type: "text", nullable: false),
+                    NgayTao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TrangThai = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,12 +221,11 @@ namespace QLSV_API.Migrations
                 name: "DoanChats",
                 columns: table => new
                 {
-                    Ma_DC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_YC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NgayTao = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    MaNguoiGui = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MaNguoiNhan = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Ma_DC = table.Column<string>(type: "text", nullable: false),
+                    Ma_YC = table.Column<string>(type: "text", nullable: false),
+                    NgayTao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    MaNguoiGui = table.Column<string>(type: "text", nullable: false),
+                    NoiDung = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -240,10 +242,10 @@ namespace QLSV_API.Migrations
                 name: "LichSuYeuCaus",
                 columns: table => new
                 {
-                    Ma_LSYC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    TrangThaiMoi = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TrangThaiCu = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ma_YC = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    Ma_LSYC = table.Column<string>(type: "text", nullable: false),
+                    TrangThaiMoi = table.Column<string>(type: "text", nullable: false),
+                    TrangThaiCu = table.Column<string>(type: "text", nullable: false),
+                    Ma_YC = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -257,44 +259,74 @@ namespace QLSV_API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ThongBaoYeuCaus",
+                name: "ThongBaoChatYeuCaus",
                 columns: table => new
                 {
-                    Ma_TBYC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_YC = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    YeuCauMa_YC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_TKSV = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TaiKhoanSinhVienMa_TKSV = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    NoiDung = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NgayThongBao = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Ma_TBCYC = table.Column<string>(type: "text", nullable: false),
+                    Ma_YC = table.Column<string>(type: "text", nullable: false),
+                    Ma_TK = table.Column<string>(type: "text", nullable: false),
+                    NoiDung = table.Column<string>(type: "text", nullable: false),
+                    NgayThongBao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TrangThai = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ThongBaoYeuCaus", x => x.Ma_TBYC);
+                    table.PrimaryKey("PK_ThongBaoChatYeuCaus", x => x.Ma_TBCYC);
                     table.ForeignKey(
-                        name: "FK_ThongBaoYeuCaus_TaiKhoanSinhViens_TaiKhoanSinhVienMa_TKSV",
-                        column: x => x.TaiKhoanSinhVienMa_TKSV,
-                        principalTable: "TaiKhoanSinhViens",
-                        principalColumn: "Ma_TKSV");
+                        name: "FK_ThongBaoChatYeuCaus_TaiKhoans_Ma_TK",
+                        column: x => x.Ma_TK,
+                        principalTable: "TaiKhoans",
+                        principalColumn: "Ma_TK",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ThongBaoYeuCaus_YeuCaus_YeuCauMa_YC",
-                        column: x => x.YeuCauMa_YC,
+                        name: "FK_ThongBaoChatYeuCaus_YeuCaus_Ma_YC",
+                        column: x => x.Ma_YC,
                         principalTable: "YeuCaus",
                         principalColumn: "Ma_YC",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "XuLyYeuCaus",
+                name: "ThongBaoYeuCaus",
                 columns: table => new
                 {
-                    Ma_YC = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Ma_TK = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    NgayXuLy = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Ma_TBYC = table.Column<string>(type: "text", nullable: false),
+                    Ma_YC = table.Column<string>(type: "text", nullable: false),
+                    Ma_TKSV = table.Column<string>(type: "text", nullable: false),
+                    NoiDung = table.Column<string>(type: "text", nullable: false),
+                    NgayThongBao = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TrangThai = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_XuLyYeuCaus", x => new { x.Ma_YC, x.Ma_TK });
+                    table.PrimaryKey("PK_ThongBaoYeuCaus", x => x.Ma_TBYC);
+                    table.ForeignKey(
+                        name: "FK_ThongBaoYeuCaus_TaiKhoanSinhViens_Ma_TKSV",
+                        column: x => x.Ma_TKSV,
+                        principalTable: "TaiKhoanSinhViens",
+                        principalColumn: "Ma_TKSV",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ThongBaoYeuCaus_YeuCaus_Ma_YC",
+                        column: x => x.Ma_YC,
+                        principalTable: "YeuCaus",
+                        principalColumn: "Ma_YC",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "XuLyYeuCaus",
+                columns: table => new
+                {
+                    Ma_YC = table.Column<string>(type: "text", nullable: false),
+                    Ma_TK = table.Column<string>(type: "text", nullable: false),
+                    NgayXuLy = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TrangThai_cu = table.Column<string>(type: "text", nullable: false),
+                    TrangThai_moi = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_XuLyYeuCaus", x => new { x.Ma_YC, x.Ma_TK, x.NgayXuLy });
                     table.ForeignKey(
                         name: "FK_XuLyYeuCaus_TaiKhoans_Ma_TK",
                         column: x => x.Ma_TK,
@@ -322,13 +354,13 @@ namespace QLSV_API.Migrations
 
             migrationBuilder.InsertData(
                 table: "NhanViens",
-                columns: new[] { "Ma_NV", "ChucVu", "DiaChi", "Email", "NamVaoLam", "NgaySinh", "Ten_NV" },
-                values: new object[] { "NV0001", "Admin", "Bạc Liêu", "htuan15424@gmail.com", 2015, new DateTime(2004, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), "Lê Đăng Hoàng Tuấn" });
+                columns: new[] { "Ma_NV", "ChucVu", "DiaChi", "Email", "Gioitinh", "NamVaoLam", "NgaySinh", "SDT", "Ten_NV" },
+                values: new object[] { "NV0001", "Admin", "Bạc Liêu", "htuan15424@gmail.com", "Nam", 2015, new DateTime(2004, 4, 15, 0, 0, 0, 0, DateTimeKind.Utc), "0987654321", "Lê Đăng Hoàng Tuấn" });
 
             migrationBuilder.InsertData(
                 table: "TaiKhoans",
                 columns: new[] { "Ma_TK", "Ma_Loai", "Ma_NV", "MatKhau", "TenDangNhap" },
-                values: new object[] { "A0001", "Admin", "NV0001", "123456789", "admin1" });
+                values: new object[] { "A0001", "ADMIN", "NV0001", "123456789", "admin1" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DoanChats_Ma_YC",
@@ -361,19 +393,29 @@ namespace QLSV_API.Migrations
                 column: "Ma_SV");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ThongBaoChatYeuCaus_Ma_TK",
+                table: "ThongBaoChatYeuCaus",
+                column: "Ma_TK");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ThongBaoChatYeuCaus_Ma_YC",
+                table: "ThongBaoChatYeuCaus",
+                column: "Ma_YC");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ThongBaos_Ma_TKSV",
                 table: "ThongBaos",
                 column: "Ma_TKSV");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ThongBaoYeuCaus_TaiKhoanSinhVienMa_TKSV",
+                name: "IX_ThongBaoYeuCaus_Ma_TKSV",
                 table: "ThongBaoYeuCaus",
-                column: "TaiKhoanSinhVienMa_TKSV");
+                column: "Ma_TKSV");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ThongBaoYeuCaus_YeuCauMa_YC",
+                name: "IX_ThongBaoYeuCaus_Ma_YC",
                 table: "ThongBaoYeuCaus",
-                column: "YeuCauMa_YC");
+                column: "Ma_YC");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TinTucs_Ma_TK",
@@ -404,6 +446,9 @@ namespace QLSV_API.Migrations
 
             migrationBuilder.DropTable(
                 name: "LichSuYeuCaus");
+
+            migrationBuilder.DropTable(
+                name: "ThongBaoChatYeuCaus");
 
             migrationBuilder.DropTable(
                 name: "ThongBaos");

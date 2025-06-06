@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using QLSV_API.Repository;
 
 #nullable disable
@@ -12,8 +12,8 @@ using QLSV_API.Repository;
 namespace QLSV_API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250522150514_AddColumnTrangThaiThongBaoYeuCau")]
-    partial class AddColumnTrangThaiThongBaoYeuCau
+    [Migration("20250606212025_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,29 +21,29 @@ namespace QLSV_API.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "9.0.4")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("QLSV_API.Model.DoanChat", b =>
                 {
                     b.Property<string>("Ma_DC")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("MaNguoiGui")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_YC")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_DC");
 
@@ -55,19 +55,19 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.LichSuYeuCau", b =>
                 {
                     b.Property<string>("Ma_LSYC")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_YC")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TrangThaiCu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TrangThaiMoi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_LSYC");
 
@@ -79,11 +79,11 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.LoaiTaiKhoan", b =>
                 {
                     b.Property<string>("Ma_Loai")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ten_Loai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_Loai");
 
@@ -115,11 +115,11 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.LoaiYeuCau", b =>
                 {
                     b.Property<string>("Ma_loaiYC")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ten_loaiYC")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_loaiYC");
 
@@ -129,11 +129,11 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.Lop", b =>
                 {
                     b.Property<string>("MaLop")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TenLop")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("MaLop");
 
@@ -143,37 +143,37 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.NhanVien", b =>
                 {
                     b.Property<string>("Ma_NV")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ChucVu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DiaChi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Gioitinh")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("NamVaoLam")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("SDT")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ten_NV")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_NV");
 
@@ -188,7 +188,7 @@ namespace QLSV_API.Migrations
                             Email = "htuan15424@gmail.com",
                             Gioitinh = "Nam",
                             NamVaoLam = 2015,
-                            NgaySinh = new DateTime(2004, 4, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            NgaySinh = new DateTime(2004, 4, 15, 0, 0, 0, 0, DateTimeKind.Utc),
                             SDT = "0987654321",
                             Ten_NV = "Lê Đăng Hoàng Tuấn"
                         });
@@ -197,49 +197,49 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.SinhVien", b =>
                 {
                     b.Property<string>("Ma_SV")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("BacDaoTao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("DiaChi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Gioi_Tinh")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<int>("KhoaHoc")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("LoaiHinhDaoTao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LopHoc")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("MaLop")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Nganh")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("NgaySinh")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Ten_SV")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_SV");
 
@@ -251,23 +251,23 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.TaiKhoan", b =>
                 {
                     b.Property<string>("Ma_TK")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_Loai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_NV")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("MatKhau")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TenDangNhap")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_TK");
 
@@ -291,19 +291,19 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.TaiKhoanSinhVien", b =>
                 {
                     b.Property<string>("Ma_TKSV")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_SV")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("MatKhau")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TenDangNhap")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_TKSV");
 
@@ -315,19 +315,19 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.ThongBao", b =>
                 {
                     b.Property<string>("Ma_TT")
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("text")
                         .HasColumnOrder(0);
 
                     b.Property<string>("Ma_TKSV")
-                        .HasColumnType("nvarchar(450)")
+                        .HasColumnType("text")
                         .HasColumnOrder(1);
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("TrangThai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_TT", "Ma_TKSV");
 
@@ -336,29 +336,62 @@ namespace QLSV_API.Migrations
                     b.ToTable("ThongBaos");
                 });
 
-            modelBuilder.Entity("QLSV_API.Model.ThongBaoYeuCau", b =>
+            modelBuilder.Entity("QLSV_API.Model.ThongBaoChatYeuCau", b =>
                 {
-                    b.Property<string>("Ma_TBYC")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("Ma_TBCYC")
+                        .HasColumnType("text");
 
-                    b.Property<string>("Ma_TKSV")
+                    b.Property<string>("Ma_TK")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_YC")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("NgayThongBao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TrangThai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.HasKey("Ma_TBCYC");
+
+                    b.HasIndex("Ma_TK");
+
+                    b.HasIndex("Ma_YC");
+
+                    b.ToTable("ThongBaoChatYeuCaus");
+                });
+
+            modelBuilder.Entity("QLSV_API.Model.ThongBaoYeuCau", b =>
+                {
+                    b.Property<string>("Ma_TBYC")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Ma_TKSV")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Ma_YC")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("NgayThongBao")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("NoiDung")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TrangThai")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_TBYC");
 
@@ -372,18 +405,18 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.TinTuc", b =>
                 {
                     b.Property<string>("Ma_TT")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_TK")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_TT");
 
@@ -395,21 +428,21 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.XuLyYeuCau", b =>
                 {
                     b.Property<string>("Ma_YC")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_TK")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("NgayXuLy")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("TrangThai_cu")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TrangThai_moi")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_YC", "Ma_TK", "NgayXuLy");
 
@@ -421,26 +454,26 @@ namespace QLSV_API.Migrations
             modelBuilder.Entity("QLSV_API.Model.YeuCau", b =>
                 {
                     b.Property<string>("Ma_YC")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_TKSV")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Ma_loaiYC")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("NgayTao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("NoiDung")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TrangThai")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Ma_YC");
 
@@ -531,6 +564,25 @@ namespace QLSV_API.Migrations
                     b.Navigation("TaiKhoanSinhVien");
 
                     b.Navigation("TinTuc");
+                });
+
+            modelBuilder.Entity("QLSV_API.Model.ThongBaoChatYeuCau", b =>
+                {
+                    b.HasOne("QLSV_API.Model.TaiKhoan", "TaiKhoan")
+                        .WithMany()
+                        .HasForeignKey("Ma_TK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("QLSV_API.Model.YeuCau", "YeuCau")
+                        .WithMany()
+                        .HasForeignKey("Ma_YC")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TaiKhoan");
+
+                    b.Navigation("YeuCau");
                 });
 
             modelBuilder.Entity("QLSV_API.Model.ThongBaoYeuCau", b =>
