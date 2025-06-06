@@ -42,10 +42,23 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Cấu hình DbContext (EF Core)
+// ✅ THAY ĐỔI: Cấu hình DbContext cho PostgreSQL (Supabase)
+// Ưu tiên Environment Variable từ Render, fallback về appsettings.json
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
+	?? builder.Configuration.GetConnectionString("DefaultConnection");
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+	options.UseNpgsql(connectionString, npgsqlOptions =>
+	{
+		npgsqlOptions.EnableRetryOnFailure(3); // Retry 3 lần nếu connection fail
+		npgsqlOptions.CommandTimeout(30); // Timeout 30 giây
+	})
 );
+
+// ❌ KHÔNG DÙNG SQL Server nữa (nhưng giữ lại để tham khảo)
+// builder.Services.AddDbContext<AppDbContext>(options =>
+// 	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+// );
 
 // Cho phép tất cả origin (nên giới hạn sau này nếu cần bảo mật)
 builder.Services.AddCors(options =>
@@ -70,4 +83,5 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
 app.Run();
